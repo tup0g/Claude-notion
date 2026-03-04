@@ -1,0 +1,5 @@
+This is a test note uploaded from Claude Code via the gdrive-save.js script.
+
+Project: Claude-notion-test-task
+Date: 2026-03-04
+Purpose: End-to-end verification of Google Drive upload pipeline using OAuth2 credentials.

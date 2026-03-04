@@ -8,6 +8,44 @@ Core pipeline: Read Notion pages via MCP and save locally as .txt files. Include
 - Framework: get-shit-done-cc (GSD)
 - Budget Profile: `eco` (Strictly adhere to this to prevent token exhaustion).
 
+## Google Drive Integration
+
+### Architecture
+
+- **MCP server**: `mcp/gdrive` Docker image, registered as `gdrive` MCP server in Claude Code.
+- **Auth**: Manual OAuth2 flow via `gdrive-auth/auth.js` using `google-auth-library`. Credentials stored in `gdrive-auth/credentials.json` and `gdrive-auth/token.json`.
+- **Upload script**: `gdrive-save.js` — uploads any local file to Google Drive using `googleapis`. Uses the same token from `gdrive-auth/`.
+
+### How auth was configured
+
+```sh
+node gdrive-auth/auth.js
+```
+
+Open the printed URL, authorize, paste the full redirect URL back. `token.json` is written automatically.
+
+### MCP server registration
+
+```sh
+claude mcp add gdrive -- docker run -i --rm \
+  -v $(pwd)/gdrive-auth:/auth \
+  -e GDRIVE_OAUTH_PATH=/auth/credentials.json \
+  -e GDRIVE_CREDENTIALS_PATH=/auth/token.json \
+  mcp/gdrive
+```
+
+Note: `--` is required to prevent Claude from parsing Docker flags as its own options.
+
+### Uploading a file
+
+```sh
+node gdrive-save.js <path-to-file>
+```
+
+### Reading/searching via MCP
+
+Use the `gdrive` MCP tools (available in new Claude sessions) to search and read files by name or ID.
+
 ## Strict Rules
 
 1. ZERO COMMENTS IN CODE. Not a single line. No exceptions.
