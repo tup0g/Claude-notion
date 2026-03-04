@@ -1,7 +1,7 @@
 ---
 name: gdrive-save
 description: Uploads a local file to Google Drive using the OAuth2 token from gdrive-auth/. Auto-invoke when user asks to upload, save, or push a local file to Google Drive.
-argument-hint: "<file-path>"
+argument-hint: "<file-path> [--folder <gdrive-folder-id>]"
 ---
 
 ## Required Tools
@@ -13,6 +13,7 @@ argument-hint: "<file-path>"
 
 Parse `$ARGUMENTS` for:
 - `file-path`: required positional argument — path to the local file to upload
+- `--folder <gdrive-folder-id>`: optional — Google Drive folder ID to upload into; defaults to Drive root
 
 If `file-path` is missing, ask:
 ```

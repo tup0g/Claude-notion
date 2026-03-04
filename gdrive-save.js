@@ -14,17 +14,24 @@ auth.setCredentials(JSON.parse(fs.readFileSync(TOKEN_PATH, 'utf8')));
 
 const drive = google.drive({ version: 'v3', auth });
 
-const filePath = process.argv[2];
+const args = process.argv.slice(2);
+const folderIndex = args.indexOf('--folder');
+const folderId = folderIndex !== -1 ? args.splice(folderIndex, 2)[1] : null;
+const filePath = args[0];
+
 if (!filePath) {
-    console.error('Usage: node gdrive-save.js <file-path>');
+    console.error('Usage: node gdrive-save.js <file-path> [--folder <gdrive-folder-id>]');
     process.exit(1);
 }
 
 const fileName = path.basename(filePath);
 const mimeType = 'text/plain';
 
+const requestBody = { name: fileName, mimeType };
+if (folderId) requestBody.parents = [folderId];
+
 drive.files.create({
-    requestBody: { name: fileName, mimeType },
+    requestBody,
     media: { mimeType, body: fs.createReadStream(filePath) },
     fields: 'id, name, webViewLink',
 }).then(({ data }) => {
