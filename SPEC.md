@@ -29,6 +29,11 @@ graph TD
 | /notion-process | Notion -> AI -> Notion | Transformation: Action Item Extractor. Reads a page, identifies tasks using AI, and creates a "Meeting Minutes" summary in a new Notion page. |
 | /generate-docs | Local -> Local | Scans the codebase and automatically generates README.md. |
 
+## Phase 3: AI Transformation Pipeline
+
+**Transformation Chosen:** Study Guide Generator (Overview, Key Concepts, and Q&A Review).
+**Why:** This transformation goes beyond simple copying or summarizing. It requires semantic understanding of the source content to extract technical terms, reformulate knowledge into testable questions, and generate concise answers. It turns raw notes into an actionable and structured learning tool, which is a highly valuable, non-trivial AI task.
+
 ## 4. CLAUDE.md Structure
 
 The CLAUDE.md file will act as the "Source of Truth" for the agent, containing:
