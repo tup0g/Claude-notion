@@ -26,8 +26,6 @@ This transformation is non-trivial because it requires semantic understanding of
 
 Internal integrations cannot create workspace-level pages. Every new page requires a `parent.page_id`. Never use `{ "workspace": true }`.
 
-The `mcp__notion__API-patch-block-children` tool only accepts `paragraph` and `bulleted_list_item` block types. All output blocks must use one of these two types.
-
 ## Input Parsing
 
 Parse `$ARGUMENTS` for:
@@ -79,26 +77,34 @@ Generate 5–10 questions that test comprehension of the most important ideas. F
 
 ## Step 4 — Build Output Blocks
 
-Translate the generated study guide into a flat list of `paragraph` and `bulleted_list_item` blocks.
+Translate the generated study guide into Notion blocks using headings for section titles.
 
 Use this layout:
 
 ```
-paragraph:   "Overview"
-paragraph:   "<overview text>"
-paragraph:   ""   ← blank separator
-paragraph:   "Key Concepts"
+heading_1:          "Overview"
+paragraph:          "<overview text>"
+heading_1:          "Key Concepts"
 bulleted_list_item: "<Term> — <definition>"
 bulleted_list_item: "<Term> — <definition>"
 ...
-paragraph:   ""
-paragraph:   "Q&A Review"
-paragraph:   "Q: <question>"
-paragraph:   "A: <answer>"
-paragraph:   ""
-paragraph:   "Q: <question>"
-paragraph:   "A: <answer>"
+heading_1:          "Q&A Review"
+heading_2:          "Q: <question>"
+paragraph:          "A: <answer>"
+heading_2:          "Q: <question>"
+paragraph:          "A: <answer>"
 ...
+```
+
+Build each heading block as:
+```json
+{
+  "object": "block",
+  "type": "heading_1",
+  "heading_1": {
+    "rich_text": [{ "type": "text", "text": { "content": "<section title>" } }]
+  }
+}
 ```
 
 Split into chunks of at most 100 blocks.

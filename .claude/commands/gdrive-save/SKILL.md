@@ -20,6 +20,11 @@ If `file-path` is missing, ask:
 AskUserQuestion: "Please provide the path to the local file you want to upload to Google Drive."
 ```
 
+If `--folder` flag is present but no ID follows, ask:
+```
+AskUserQuestion: "Please provide the Google Drive folder ID to upload into."
+```
+
 Resolve the file path relative to the current working directory if it is not absolute.
 
 ## Step 1 — Verify File Exists
@@ -36,9 +41,14 @@ Error: File not found — <file-path>
 
 ## Step 2 — Run Upload Script
 
-Run the upload script from the project root:
+Run the upload script from the project root. Include `--folder` if it was provided:
 ```sh
-node gdrive-save.js "<file-path>"
+node gdrive-save.js "<file-path>" [--folder "<folder-id>"]
+```
+
+Example with folder:
+```sh
+node gdrive-save.js "notes.txt" --folder "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs"
 ```
 
 The script outputs three lines on success:

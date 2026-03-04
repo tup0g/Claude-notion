@@ -96,9 +96,17 @@ Notion's API accepts a maximum of 100 blocks per request. Split the block array 
 ## Update Flow
 
 1. Call `mcp__notion__API-retrieve-a-page` with the target page ID to confirm it exists.
-2. Call `mcp__notion__API-get-block-children` to list all existing blocks.
-3. Delete each existing block by calling `mcp__notion__API-delete-a-block` for each block ID.
-4. Proceed to **Write Blocks**.
+2. Call `mcp__notion__API-get-block-children` to list all existing blocks. If `has_more` is true, keep calling with `start_cursor` set to `next_cursor` until all blocks are fetched.
+3. Warn the user before proceeding:
+   ```
+   AskUserQuestion: "This will permanently delete all N existing blocks on the page and replace them with the new content. This cannot be undone. Proceed?"
+   Options:
+     - "Yes, replace all content"
+     - "Cancel"
+   ```
+   If the user cancels, abort and output: `Update cancelled — no changes made.`
+4. Delete each existing block by calling `mcp__notion__API-delete-a-block` for each block ID.
+5. Proceed to **Write Blocks**.
 
 ## Create Flow
 

@@ -1,3 +1,4 @@
 .mcp.json
 .claude/settings.local.json
-gdrive-auth/
+gdrive_auth/
+node_modules/

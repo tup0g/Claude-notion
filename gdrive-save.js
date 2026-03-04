@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { google } = require('./gdrive-auth/node_modules/googleapis');
-const { OAuth2Client } = require('./gdrive-auth/node_modules/google-auth-library');
+const { google } = require('googleapis');
+const { OAuth2Client } = require('google-auth-library');
 
 const CREDENTIALS_PATH = path.join(__dirname, 'gdrive-auth', 'credentials.json');
 const TOKEN_PATH = path.join(__dirname, 'gdrive-auth', 'token.json');

@@ -54,9 +54,13 @@ Example: `"My Project Notes!"` → `my_project_notes.txt`
 
 ## Step 3 — Retrieve Page Blocks
 
-Call `mcp__notion__API-get-block-children` with `{ "block_id": "<extracted-id>" }`.
+Fetch all blocks at a given level using a pagination loop:
+1. Call `mcp__notion__API-get-block-children` with `{ "block_id": "<id>" }`.
+2. Collect all items from `results`.
+3. If the response has `has_more: true`, repeat with `{ "block_id": "<id>", "start_cursor": "<next_cursor>" }` and append the results.
+4. Continue until `has_more` is `false` or absent.
 
-For each block in `results`, convert to plain text using the rules in Step 4. If a block has `has_children: true`, recursively call `mcp__notion__API-get-block-children` with that block's `id` and indent the child text by two spaces.
+Apply this loop at every level: first for the top-level page, then for each block where `has_children: true` — recursively call the same pagination loop with that block's `id` and indent the child text by two spaces.
 
 ## Step 4 — Block-to-Text Conversion Rules
 
